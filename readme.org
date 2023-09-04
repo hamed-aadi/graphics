@@ -1,0 +1,4 @@
+** Refrences
+https://www.raylib.com/cheatsheet/cheatsheet.html
+
+https://en.wikipedia.org/wiki/Cellular_automaton
