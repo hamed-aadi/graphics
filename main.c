@@ -60,11 +60,19 @@ void update(void) {
 				if (Ogrid[i][j+1].type == EMPTY) {
 					grid[i][j+1].type = WATER;
 					grid[i][j].type = EMPTY;
+				} else if (Ogrid[i][j+1].type == SAND) {
+					break;
 				} else if (Ogrid[i+1][j+1].type == EMPTY) {
 					grid[i+1][j+1].type = WATER;
 					grid[i][j].type = EMPTY;
-				} else if(Ogrid[i-1][j+1].type == EMPTY) {
+				} else if (Ogrid[i-1][j+1].type == EMPTY) {
 					grid[i-1][j+1].type = WATER;
+					grid[i][j].type = EMPTY;
+				} else if (Ogrid[i+1][j].type == EMPTY) {
+					grid[i+1][j].type = WATER;
+					grid[i][j].type = EMPTY;
+				} else if (Ogrid[i-1][j].type == EMPTY) {
+					grid[i-1][j].type = WATER;
 					grid[i][j].type = EMPTY;
 				};
 				break;
