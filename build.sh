@@ -3,7 +3,7 @@
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 
-FILES="main.c"
+FILES="sand.c"
 COMPILE_FLAGS="-Wall"
 LINK_FLAGS="-lraylib -lGL -lm -lpthread -ldl -lrt -lX11"
 

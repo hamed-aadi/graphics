@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <time.h>
 #include "raylib.h"
 
@@ -8,11 +10,14 @@
 #define WIDTH 502
 #define HEIGHT 502
 
+/*
+	sand clock
+*/
 
 typedef enum  {
 	EMPTY,
 	SAND,
-	WATER,
+	ICE,
 	/* FIRE, */
 	/* SMOKE, */
 } ParticalType;
@@ -47,34 +52,31 @@ void update(void) {
 				if (Ogrid[i][j+1].type == EMPTY) {
 					grid[i][j+1].type = SAND;
 					grid[i][j].type = EMPTY;
-				} else if (Ogrid[i+1][j+1].type == EMPTY) {
+				}
+				else if (Ogrid[i][j+1].type == ICE) {
+					grid[i][j+1].type = SAND;
+					grid[i][j].type = ICE;
+				}
+				else if (Ogrid[i+1][j+1].type == EMPTY) {
 					grid[i+1][j+1].type = SAND;
 					grid[i][j].type = EMPTY;
-				} else if(Ogrid[i-1][j+1].type == EMPTY) {
+				}
+				else if(Ogrid[i-1][j+1].type == EMPTY) {
 					grid[i-1][j+1].type = SAND;
 					grid[i][j].type = EMPTY;
 				};
 				break;
-			case WATER:
+				
+			case ICE:
 				if (j == 500) break;
-				if (Ogrid[i][j+1].type == EMPTY) {
-					grid[i][j+1].type = WATER;
+				
+				int dx = (rand() % 3) - 1;
+				int dy = (rand() % 2) + 1;
+
+				if (Ogrid[i + dx][j + dy].type == EMPTY) {
+					grid[i + dx][j + dy].type = ICE;
 					grid[i][j].type = EMPTY;
-				} else if (Ogrid[i][j+1].type == SAND) {
-					break;
-				} else if (Ogrid[i+1][j+1].type == EMPTY) {
-					grid[i+1][j+1].type = WATER;
-					grid[i][j].type = EMPTY;
-				} else if (Ogrid[i-1][j+1].type == EMPTY) {
-					grid[i-1][j+1].type = WATER;
-					grid[i][j].type = EMPTY;
-				} else if (Ogrid[i+1][j].type == EMPTY) {
-					grid[i+1][j].type = WATER;
-					grid[i][j].type = EMPTY;
-				} else if (Ogrid[i-1][j].type == EMPTY) {
-					grid[i-1][j].type = WATER;
-					grid[i][j].type = EMPTY;
-				};
+				} 
 				break;
 			}
 		}
@@ -88,7 +90,7 @@ void draw(void) {
 			switch (grid[i][j].type) {
 			case EMPTY:  break;
 			case SAND: DrawRectangle(i, j, 2 , 2, YELLOW); break;
-			case WATER: DrawRectangle(i, j, 2 , 2, BLUE); break;
+			case ICE: DrawRectangle(i, j, 2 , 2, WHITE); break;
 			}
 			Ogrid[i][j] = grid[i][j];
 		}
@@ -117,7 +119,7 @@ int main()
 			
 			BeginDrawing();
 			{
-			ClearBackground(RAYWHITE);
+			ClearBackground(SKYBLUE);
 				BeginMode2D(camera);
 				{
 					Vector2 pos = GetMousePosition();
@@ -125,15 +127,18 @@ int main()
 					if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 						{
 							grid[(int)pos.x][(int)pos.y].type = SAND;
-							grid[(int)pos.x+1][(int)pos.y+1].type = SAND;
-							grid[(int)pos.x+2][(int)pos.y+2].type = SAND;
-							grid[(int)pos.x+3][(int)pos.y+3].type = SAND;
+							grid[(int)pos.x+5][(int)pos.y+5].type = SAND;
+							grid[(int)pos.x-5][(int)pos.y-5].type = SAND;
+							grid[(int)pos.x+5][(int)pos.y].type = SAND;
+							grid[(int)pos.x-5][(int)pos.y].type = SAND;
+							grid[(int)pos.x][(int)pos.y+5].type = SAND;
+							grid[(int)pos.x][(int)pos.y-5].type = SAND;
 						}
 					if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
-							grid[(int)pos.x][(int)pos.y].type = WATER;
-							grid[(int)pos.x+1][(int)pos.y+1].type = WATER;
-							grid[(int)pos.x+2][(int)pos.y+2].type = WATER;
-							grid[(int)pos.x+3][(int)pos.y+3].type = WATER;
+							grid[(int)pos.x][(int)pos.y].type = ICE;
+							grid[(int)pos.x+1][(int)pos.y+1].type = ICE;
+							grid[(int)pos.x+2][(int)pos.y+2].type = ICE;
+							grid[(int)pos.x+3][(int)pos.y+3].type = ICE;
 					}
 					update();
 					draw();
