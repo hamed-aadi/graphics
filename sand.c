@@ -4,20 +4,18 @@
 #include <time.h>
 #include "raylib.h"
 
-#include "rlgl.h"
+/* #include "rlgl.h" */
 #include "raymath.h"
 
 #define WIDTH 502
 #define HEIGHT 502
 
-/*
-	sand clock
-*/
 
 typedef enum  {
 	EMPTY,
 	SAND,
 	ICE,
+	/* WOOD, */
 	/* FIRE, */
 	/* SMOKE, */
 } ParticalType;
@@ -119,11 +117,13 @@ int main()
 			
 			BeginDrawing();
 			{
-			ClearBackground(SKYBLUE);
+				ClearBackground(SKYBLUE);
+				DrawText("right click for snow, left for sand", 5, 5, 20, BLACK);
+				
 				BeginMode2D(camera);
 				{
 					Vector2 pos = GetMousePosition();
-					/* DrawText("pos", pos.x, pos.y, 12,BLACK); */
+
 					if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 						{
 							grid[(int)pos.x][(int)pos.y].type = SAND;
@@ -134,11 +134,12 @@ int main()
 							grid[(int)pos.x][(int)pos.y+5].type = SAND;
 							grid[(int)pos.x][(int)pos.y-5].type = SAND;
 						}
+					
 					if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
-							grid[(int)pos.x][(int)pos.y].type = ICE;
-							grid[(int)pos.x+1][(int)pos.y+1].type = ICE;
-							grid[(int)pos.x+2][(int)pos.y+2].type = ICE;
-							grid[(int)pos.x+3][(int)pos.y+3].type = ICE;
+						grid[(int)pos.x][(int)pos.y].type = ICE;
+						grid[(int)pos.x+1][(int)pos.y+1].type = ICE;
+						grid[(int)pos.x+2][(int)pos.y+2].type = ICE;
+						grid[(int)pos.x+3][(int)pos.y+3].type = ICE;
 					}
 					update();
 					draw();
