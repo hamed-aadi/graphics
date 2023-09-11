@@ -1,4 +1,7 @@
-** Refrences
-https://www.raylib.com/cheatsheet/cheatsheet.html
+** References
+https://www.raylib.com/cheatsheet/cheatsheet.html 
 
-https://en.wikipedia.org/wiki/Cellular_automaton
+https://en.wikipedia.org/wiki/Cellular_automaton 
+
+https://en.wikipedia.org/wiki/Conway's_Game_of_Life#Rules 
+

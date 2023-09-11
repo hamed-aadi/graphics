@@ -5,14 +5,14 @@
 #include "raylib.h"
 #include "raymath.h"
 
-
 #define WIDTH 604
 #define HEIGHT 604
 
 bool Ogrid[300][300];
 bool grid[300][300];
 
-void generate_random_grid() {
+void generate_random_grid()
+{
 	for (int i = 0; i < 300; i++) {
 		for (int j = 0; j < 300; j++) {
 			int j = (rand() % 2);
@@ -22,7 +22,8 @@ void generate_random_grid() {
 	}
 }
 
-int number_neighbours(const int i, const int j) {
+int number_neighbours(const int i, const int j)
+{
 	int num = 0;
 	if (Ogrid[i+1][j] == 1) num++;
 	if (Ogrid[i-1][j] == 1) num++;
@@ -35,7 +36,8 @@ int number_neighbours(const int i, const int j) {
 	return num;
 }
 
-void update() {
+void update()
+{
 	for (int i = 0; i < 300; i++) {
 		for (int j = 0; j < 300; j++) {
 			int neighbours = number_neighbours(i, j);

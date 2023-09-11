@@ -7,15 +7,15 @@
 /* #include "rlgl.h" */
 #include "raymath.h"
 
-#define WIDTH 502
-#define HEIGHT 502
+#define WIDTH 604
+#define HEIGHT 604
 
 
 typedef enum  {
 	EMPTY,
 	SAND,
 	ICE,
-	/* WOOD, */
+	WOOD,
 	/* FIRE, */
 	/* SMOKE, */
 } ParticalType;
@@ -25,28 +25,31 @@ typedef struct {
 } Partical;
 
 
-Partical grid[WIDTH][HEIGHT];
-Partical Ogrid[WIDTH][HEIGHT];
+Partical grid[300][300];
+Partical Ogrid[300][300];
 
-void generate_empty_world() {
-	for (int i = 0; i < WIDTH - 1; i++) {
-		for (int j = 0; j < HEIGHT - 1; j++) {
+void generate_empty_world()
+{
+	for (int i = 0; i < 300 - 1; i++) {
+		for (int j = 0; j < 300 - 1; j++) {
 			grid[i][j].type = EMPTY;
 			Ogrid[i][j].type = EMPTY;
 		}
 	}
 }
 
-void sand(const Partical partical) {
+void sand(const Partical partical)
+{
 }
 
-void update(void) {
-  for (int i = 0; i < WIDTH - 1; i++) {
-		for (int j = 0; j < HEIGHT - 1; j++) {
+void update(void)
+{
+  for (int i = 0; i < 300 - 1; i++) {
+		for (int j = 0; j < 300 - 1; j++) {
 			switch (Ogrid[i][j].type) {
 			case EMPTY: break;
 			case SAND:
-				if (j == 500) break;
+				if (j == 298) break;
 				if (Ogrid[i][j+1].type == EMPTY) {
 					grid[i][j+1].type = SAND;
 					grid[i][j].type = EMPTY;
@@ -66,7 +69,7 @@ void update(void) {
 				break;
 				
 			case ICE:
-				if (j == 500) break;
+				if (j == 298) break;
 				
 				int dx = (rand() % 3) - 1;
 				int dy = (rand() % 2) + 1;
@@ -76,19 +79,23 @@ void update(void) {
 					grid[i][j].type = EMPTY;
 				} 
 				break;
+			case WOOD:
+				break;
 			}
 		}
 	}
 }
 
 
-void draw(void) {
-	for (int i = 0; i < WIDTH - 1; i++) {
-		for (int j = 0; j < HEIGHT - 1; j++) {
+void draw(void)
+{
+	for (int i = 0; i < 300 - 1; i++) {
+		for (int j = 0; j < 300 - 1; j++) {
 			switch (grid[i][j].type) {
 			case EMPTY:  break;
-			case SAND: DrawRectangle(i, j, 2 , 2, YELLOW); break;
-			case ICE: DrawRectangle(i, j, 2 , 2, WHITE); break;
+			case SAND: DrawRectangle(i*2, j*2, 2 , 2, YELLOW); break;
+			case ICE: DrawRectangle(i*2, j*2, 2 , 2, WHITE); break;
+			case WOOD: DrawRectangle(i*2, j*2, 2 , 2, BROWN); break;
 			}
 			Ogrid[i][j] = grid[i][j];
 		}
@@ -123,7 +130,18 @@ int main()
 				BeginMode2D(camera);
 				{
 					Vector2 pos = GetMousePosition();
+					pos = (Vector2){pos.x/2, pos.y/2};
+					if (IsMouseButtonDown(MOUSE_BUTTON_MIDDLE))
+						{
+							grid[(int)pos.x][(int)pos.y].type = WOOD;
+							grid[(int)pos.x+1][(int)pos.y].type = WOOD;
+							grid[(int)pos.x][(int)pos.y+1].type = WOOD;
+							grid[(int)pos.x+1][(int)pos.y+1].type = WOOD;
 
+							grid[(int)pos.x-1][(int)pos.y].type = WOOD;
+							grid[(int)pos.x][(int)pos.y-1].type = WOOD;
+							grid[(int)pos.x-1][(int)pos.y-1].type = WOOD;
+						}
 					if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 						{
 							grid[(int)pos.x][(int)pos.y].type = SAND;
@@ -141,6 +159,10 @@ int main()
 						grid[(int)pos.x+2][(int)pos.y+2].type = ICE;
 						grid[(int)pos.x+3][(int)pos.y+3].type = ICE;
 					}
+					if (IsKeyDown(KEY_D)) {
+						grid[(int)pos.x][(int)pos.y].type = EMPTY;
+					}
+					
 					update();
 					draw();
 				}
